@@ -12,16 +12,20 @@ function update() {
     }
 
     if (!snake.collided) {
-        if (Keys.isUpKey()) {
-            Move.up(snake);
-        } else if (Keys.isDownKey()) {
-            Move.down(snake);
-        } else if (Keys.isLeftKey()) {
-            Move.left(snake);
-        } else if (Keys.isRightKey()) {
-            Move.right(snake);
-        }
+        checkMovement();
     }
     snake.draw();
     requestAnimationFrame(update);
+}
+
+function checkMovement() {
+    if (Keys.isUpKey()) {
+        Move.up(snake);
+    } else if (Keys.isDownKey()) {
+        Move.down(snake);
+    } else if (Keys.isLeftKey()) {
+        Move.left(snake);
+    } else if (Keys.isRightKey()) {
+        Move.right(snake);
+    }
 }
