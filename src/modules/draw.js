@@ -23,6 +23,8 @@ function game(snake) {
         ctx.fillRect(block.x, block.y, snake.blockWidth, snake.blockHeight);
     });
 
+    ctx.fillRect(snake.apple.x, snake.apple.y, snake.apple.width, snake.apple.height);
+
      if (snake.collided) {
         gameOver();
     }

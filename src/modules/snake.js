@@ -1,25 +1,22 @@
 import Random from './random';
 import Draw from './draw';
+import Apple from './apple';
 
-const defaults = {
-	width: 10,
-	height: 10,
-	speed: 2
+const options = {
+	width: 25,
+	height: 25,
 }
 
 class Snake {
-	constructor(options) {
-		if (!options) {
-			options = defaults;
-		}
+	constructor() {
 		this.collided = false;
 		this.color = Random.getRandomColor();
-		this.moveSpeed = options.speed;
 		this.blockWidth = options.width;
 		this.blockHeight = options.height;
-		this.blocks = Random.createRandomSnakeBlocks(defaults.width, defaults.height);
+		this.blocks = Random.createRandomSnakeBlocks(options.width, options.height);
+		this.apple = new Apple();
+		this.direction = '';
 	}
-
 	draw() {
 		Draw.game(this);
 	}

@@ -3,10 +3,23 @@ import Move from './modules/move';
 import Keys from './modules/keys';
 
 let snake = new Snake();
-
+let updateId,
+    previousDelta = 0,
+    fpsLimit = 7;
 requestAnimationFrame(update);
 
-function update() {
+function update(currentDelta) {
+
+    updateId = requestAnimationFrame(update);
+
+    let delta = currentDelta - previousDelta;
+
+    if (fpsLimit && delta < 1000 / fpsLimit) {
+        return;
+    }
+
+   
+
     if (Keys.isRestartKey() && snake.collided) {
         snake = new Snake();
     }
@@ -15,17 +28,21 @@ function update() {
         checkMovement();
     }
     snake.draw();
-    requestAnimationFrame(update);
+
+    previousDelta = currentDelta;
 }
 
 function checkMovement() {
-    if (Keys.isUpKey()) {
-        Move.up(snake);
-    } else if (Keys.isDownKey()) {
-        Move.down(snake);
-    } else if (Keys.isLeftKey()) {
-        Move.left(snake);
-    } else if (Keys.isRightKey()) {
-        Move.right(snake);
+    if (Keys.isUpKey() && snake.direction != "down") {
+        snake.direction = "up";
+    } else if (Keys.isDownKey() && snake.direction != "up") {
+        snake.direction = "down";
+    } else if (Keys.isLeftKey() && snake.direction != "right") {
+        snake.direction = "left";
+    } else if (Keys.isRightKey() && snake.direction != "left") {
+        snake.direction = "right";
     }
+
+    console.log("checking");
+    Move.move(snake);
 }

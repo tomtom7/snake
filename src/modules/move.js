@@ -45,4 +45,21 @@ function right(snake) {
     }
 }
 
-export default {up, down, left, right}
+function move(snake) {
+	switch(snake.direction) {
+		case "up":
+			up(snake);
+			break;
+		case "down":
+			down(snake);
+			break;
+		case "left":
+			left(snake);
+			break;
+		case "right":
+			right(snake);
+			break;
+	}
+}
+
+export default {move}
