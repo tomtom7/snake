@@ -5,10 +5,9 @@ import Apple from './apple';
 const options = {
 	width: 1,
 	height: 1,
-	scale: 15,
+	scale: 16,
 	direction: 'right',
 	moving: false,
-	speed: 1
 }
 
 class Snake {
@@ -21,7 +20,6 @@ class Snake {
 		this.blocks = this._createBlocks(this.width);
 		this.direction = options.direction;
 		this.moving = options.moving;
-		this.speed = options.speed;
 	}
 
 	_createBlocks(blockWidth) {

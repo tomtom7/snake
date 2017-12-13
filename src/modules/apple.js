@@ -4,7 +4,7 @@ import Collision from './collision';
 const options = {
 	width: 1,
 	height: 1,
-	scale: 15
+	scale: 16
 }
 
 let canvas = document.getElementById("game");

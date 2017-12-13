@@ -9,13 +9,13 @@ class Movement {
 		var newY = head.y;
 
 		if (game.snake.direction == 'up') {
-			newY -= game.snake.speed;
+			newY--;
 		} else if (game.snake.direction == 'down') {
-			newY += game.snake.speed;
+			newY++;
 		} else if (game.snake.direction == 'right') {
-			newX += game.snake.speed;
+			newX++;
 		} else if (game.snake.direction == 'left') {
-			newX -= game.snake.speed;
+			newX--;
 		}
 
 		if (Collision.withWall(newX, newY, game.snake) || Collision.withItSelf(newX, newY, game.snake)) {
@@ -31,7 +31,6 @@ class Movement {
 	_started() {
     	return Keys.isUpKey() || Keys.isDownKey() || Keys.isRightKey();
     }
-
 
 	_checkDirection(snake) {
 		if (this._started()) {

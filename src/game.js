@@ -7,7 +7,7 @@ import Apple from './modules/apple';
 
 class Game {
     constructor() {
-        this.fps = 20;
+        this.fps = 15;
         this.then = Date.now();
         this.interval = 1000 / this.fps;
         this._restart();
