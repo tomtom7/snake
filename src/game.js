@@ -1,48 +1,84 @@
 import Snake from './modules/snake';
-import Move from './modules/move';
+import Movement from './modules/movement';
 import Keys from './modules/keys';
+import Draw from './modules/draw';
+import Apple from './modules/apple';
 
-let snake = new Snake();
-let updateId,
-    previousDelta = 0,
-    fpsLimit = 7;
-requestAnimationFrame(update);
 
-function update(currentDelta) {
-
-    updateId = requestAnimationFrame(update);
-
-    let delta = currentDelta - previousDelta;
-
-    if (fpsLimit && delta < 1000 / fpsLimit) {
-        return;
+class Game {
+    constructor() {
+        this.fps = 20;
+        this.then = Date.now();
+        this.interval = 1000 / this.fps;
+        this._restart();
     }
 
-   
-
-    if (Keys.isRestartKey() && snake.collided) {
-        snake = new Snake();
+    _restart() {
+        if (this.state != 'playing') {
+            this.snake = new Snake();
+            this.addApple()
+            this.movement = new Movement();
+            this.state = 'waiting';
+        }
     }
 
-    if (!snake.collided) {
-        checkMovement();
+    addApple() {
+        this.apple = new Apple(this.snake);
     }
-    snake.draw();
 
-    previousDelta = currentDelta;
+    end() {
+        this.snake.collide();
+        this.state = 'ended';
+    }
+
+    mainLoop(time) {
+        requestAnimationFrame(() => this.mainLoop());
+        this.now = Date.now();
+        this.delta = this.now - this.then;
+     
+        if (this.delta > this.interval) {
+            // Just `then = now` is not enough.
+            // Lets say we set fps at 10 which means each frame must take 100ms
+            // Now frame executes in 16ms (60fps) so the loop iterates 7 times (16*7 = 112ms) until delta > interval === true
+            // Eventually this lowers down the FPS as 112*10 = 1120ms (NOT 1000ms). So we have to get rid of that extra 12ms
+            // by subtracting delta (112) % interval (100).
+            this.then = this.now - (this.delta % this.interval);
+            Draw.game(this);
+
+            switch(this.state) {
+                case 'ended':
+                    this.checkRestart();
+                    break;
+                case 'playing':
+                    this.movement.check(this)
+                    break;
+                case 'waiting':
+                    this.checkStart();
+                    break;
+            }
+        }
+    }
+
+    checkRestart() {
+        if (Keys.isRestartKey()) {
+            this._restart();
+        }
+    }
+
+    checkStart() {
+        if (!this.snake.moving) {
+            this.movement.check(this);
+        }
+
+        if (this.snake.moving) {
+            this.state = 'playing';
+        }
+    }
+
+    start() {
+        requestAnimationFrame(() => this.mainLoop());
+    }
 }
 
-function checkMovement() {
-    if (Keys.isUpKey() && snake.direction != "down") {
-        snake.direction = "up";
-    } else if (Keys.isDownKey() && snake.direction != "up") {
-        snake.direction = "down";
-    } else if (Keys.isLeftKey() && snake.direction != "right") {
-        snake.direction = "left";
-    } else if (Keys.isRightKey() && snake.direction != "left") {
-        snake.direction = "right";
-    }
-
-    console.log("checking");
-    Move.move(snake);
-}
+let game = new Game();
+game.start();

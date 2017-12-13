@@ -1,10 +1,10 @@
 let keys = [];
 
-document.addEventListener("keydown", function(e) {
+document.addEventListener("keydown", (e) =>{
     keys[e.keyCode] = true;
 });
 
-document.addEventListener("keyup", function(e) {
+document.addEventListener("keyup", (e) => {
     keys[e.keyCode] = false;
 });
 

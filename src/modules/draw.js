@@ -1,33 +1,38 @@
 let canvas = document.getElementById("game");
 let ctx = canvas.getContext("2d");
 
-function clearCanvas() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+class Draw {
+	static _clearCanvas() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
+	static _gameOver() {
+		let x = (canvas.width / 2) - 170;
+		let y = canvas.height / 2;
+
+		ctx.font = 'italic 20pt Calibri';
+		ctx.fillStyle = "black";
+		ctx.fillText('Game over! Press space to restart', x, y);
+	}
+
+	static game(game) {
+		this._clearCanvas();
+
+		ctx.save();
+		ctx.scale(game.snake.scale, game.snake.scale);
+
+	    game.snake.blocks.forEach((block) => {
+	    	ctx.beginPath();
+	    	ctx.fillStyle = game.snake.color;
+	    	ctx.fillRect(block.x, block.y, game.snake.width, game.snake.height);
+	    });
+	    
+	    ctx.fillRect(game.apple.x, game.apple.y, game.apple.width, game.apple.height);
+
+	    ctx.restore();
+	     if (game.snake.collided) {
+	        this._gameOver();
+	    }
+	}
 }
-
-function gameOver() {
-	let x = (canvas.width / 2) - 170;
-	let y = canvas.height / 2;
-
-	ctx.font = 'italic 20pt Calibri';
-	ctx.fillStyle = "black";
-	ctx.fillText('Game over! Press space to restart', x, y);
-}
-
-function game(snake) {
-    clearCanvas();
-
-    ctx.fillStyle = snake.color;
-
-    snake.blocks.forEach((block) => {
-        ctx.fillRect(block.x, block.y, snake.blockWidth, snake.blockHeight);
-    });
-
-    ctx.fillRect(snake.apple.x, snake.apple.y, snake.apple.width, snake.apple.height);
-
-     if (snake.collided) {
-        gameOver();
-    }
-}
-
-export default {game}
+export default Draw
