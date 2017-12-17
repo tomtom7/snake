@@ -12,10 +12,9 @@ class Random {
 	    return color;
 	}
 
-	static getRandomStartingPosition(maxRandom, maxBoxSide, scale) {
+	static getRandomStartingPosition(maxRandom, scale) {
 		let max = maxRandom / scale;
-		return Math.floor(Math.random() * (max - maxBoxSide));
-
+		return  Math.floor(Math.random() * max) * scale;
 	}
 
 }

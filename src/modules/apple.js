@@ -1,27 +1,20 @@
 import Random from './random';
 import Collision from './collision';
 
-const options = {
-	width: 1,
-	height: 1,
-	scale: 10
-}
-
 let canvas = document.getElementById("game");
 
 class Apple {
-	constructor(snake) {
-		this.height = options.height;
-		this.width = options.width;
-		this._getPosition(snake);
+	constructor(blocks, scale) {
+		this.scale = scale;
+		this._getPosition(blocks);
 	}
 
-	_getPosition(snake) {
-		let x = Random.getRandomStartingPosition(canvas.width, options.width, options.scale);
-		let y = Random.getRandomStartingPosition(canvas.height, options.width, options.scale);
+	_getPosition(blocks) {
+		let x = Random.getRandomStartingPosition(canvas.width, this.scale);
+		let y = Random.getRandomStartingPosition(canvas.height, this.scale);
 
-		if (Collision.withItSelf(x, y, snake)) {
-			this._getPosition(snake);
+		if (Collision.withItSelf(x, y, blocks)) {
+			this._getPosition(blocks);
 		}  else {
 			this.x = x;
 			this.y = y;

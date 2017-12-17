@@ -6,15 +6,15 @@ class Collision {
 		return block.x == x && block.y == y;
 	}
 
-	static withItSelf(x, y, snake) {
-		return snake.blocks.some((block) => this._hasPoint(block, x, y));
+	static withItSelf(x, y, blocks) {
+		return blocks.some(block => this._hasPoint(block, x, y));
 	}
 
-	static withWall(x, y, snake) {
+	static withWall(x, y, scale) {
 		return x < 0 || 
 			y < 0 || 
-			x >= canvas.width / snake.scale || 
-			y >= canvas.height / snake.scale;
+			x + scale > canvas.width ||
+			y + scale > canvas.height;
 	}
 
 }

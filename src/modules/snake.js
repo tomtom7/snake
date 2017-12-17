@@ -1,32 +1,21 @@
 import Random from './random';
-import Draw from './draw';
 import Apple from './apple';
 
-const options = {
-	width: 1,
-	height: 1,
-	scale: 10,
-	direction: 'right',
-	moving: false,
-}
-
 class Snake {
-	constructor() {
-		this.collided = false;
+	constructor(scale) {
+		this.scale = scale;
+		this.moving = false;
 		this.color = Random.getRandomColor();
-		this.width = options.width;
-		this.height = options.height;
-		this.scale = options.scale;
-		this.blocks = this._createBlocks(this.width);
-		this.direction = options.direction;
-		this.moving = options.moving;
+		this.blocks = this._createBlocks(this.scale);
+		this.direction = 'right';
+		this.apple = new Apple(this.blocks, this.scale);
 	}
 
-	_createBlocks(blockWidth) {
+	_createBlocks(scale) {
 		let blocks = [];
 
-		for (var i = 15; i >= 10; i--) {
-			blocks.push({x: i, y: 10});
+		for (var i = 5; i >= 0; i--) {
+			blocks.push({x: i * this.scale, y: this.scale * 10});
 		}
 
 		return blocks;
@@ -35,23 +24,20 @@ class Snake {
 	move(block) {
 		this.blocks.unshift(block);
 		this.blocks.pop();
-    }
+    }	
 
-    eat(apple) {
-    	this.blocks.unshift(apple);
+    canEat(x, y) {
+		return this.apple.x == x && this.apple.y == y;
+	}
+
+    eat() {
+    	this.blocks.unshift(this.apple);
+    	this.apple = new Apple(this.blocks, this.scale);
     }
 
 	head() {
     	return this.blocks[0];
     }
-
-    collide() {
-		this.collided = true;
-	}
-
-	canEat(x, y, apple) {
-		return apple.x == x && apple.y == y;
-	}
 }
 
 export default Snake
